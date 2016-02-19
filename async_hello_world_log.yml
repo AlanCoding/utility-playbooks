@@ -1,6 +1,6 @@
 - hosts: all
   tasks:
     - name: 'Poll Hello World'
-      async: 10
-      poll: 3
+      async: 20
+      poll: 2
       shell: echo "Hello world"
