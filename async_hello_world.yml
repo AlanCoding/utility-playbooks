@@ -1,5 +1,7 @@
-- name: 'Poll Hello World'
-  async: 10
-  poll: 3
-  shell: echo "Hello world"
-  no_log: true
+- hosts: all
+  tasks:
+    - name: 'Poll Hello World'
+      async: 10
+      poll: 3
+      shell: echo "Hello world"
+      no_log: true
