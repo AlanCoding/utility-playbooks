@@ -4,3 +4,4 @@
       async: 20
       poll: 2
       shell: echo "Hello world"
+      no_log: false
