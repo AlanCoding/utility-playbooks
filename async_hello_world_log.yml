@@ -3,5 +3,5 @@
     - name: 'Poll Hello World'
       async: 20
       poll: 2
-      shell: echo "Hello world"
+      command: /bin/sleep 18
       no_log: false
