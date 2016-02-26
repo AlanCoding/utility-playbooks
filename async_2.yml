@@ -4,4 +4,4 @@
       async: 20
       poll: 1
       command: /bin/sleep 2
-      no_log: false
+      no_log: true
