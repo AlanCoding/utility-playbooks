@@ -1,8 +1,9 @@
 - hosts: all
   tasks:
-    - name: 'Hello World 1'
-      command: echo "hello world 1"
+    - name: Hello World repeated {{ item }}
+      command: echo "hello world {{ item }}"
       no_log: true
-    - name: 'Hello World 1'
-      command: echo "hello world 1"
-      no_log: true
+      with_items:
+        - 1
+        - 2
+        - 3
