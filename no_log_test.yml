@@ -1,0 +1,8 @@
+- hosts: all
+  tasks:
+    - name: 'Hello World 1'
+      command: echo "hello world 1"
+      no_log: true
+    - name: 'Hello World 1'
+      command: echo "hello world 1"
+      no_log: true
