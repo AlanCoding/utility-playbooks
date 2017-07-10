@@ -11,4 +11,4 @@
         - date
 
     - debug: var=command_register
-    - debug: msg="{{ command_register.stdout }}"
+    - debug: msg="{{ command_register.results|map(attribute='stdout')|list }}"

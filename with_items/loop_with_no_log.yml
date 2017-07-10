@@ -10,8 +10,5 @@
       with_items:
         - date
 
-    - name: debug1
-      debug: var="{{command_register}}"
-
-    - name: debug2
-      debug: msg="{{ command_register.stdout }}"
+    - debug: var=command_register
+    - debug: msg="{{ command_register.results|map(attribute='stdout')|list }}"
