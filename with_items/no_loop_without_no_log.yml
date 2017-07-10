@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - command: "date"
+      register: command_register
+      ignore_errors: true
+      no_log: False
+
+    - debug: var=command_register
+    - debug: msg="{{ command_register.stdout }}"
