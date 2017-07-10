@@ -10,5 +10,8 @@
       with_items:
         - date
 
-    - debug: var=command_register
-    - debug: msg="{{ command_register.stdout }}"
+    - name: debug1
+      debug: var="{{command_register}}"
+
+    - name: debug2
+      debug: msg="{{ command_register.stdout }}"
