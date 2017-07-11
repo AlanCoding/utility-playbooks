@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+      recursive: "{{ recursive | default('You should not do this') }}"
+  tasks:
+    - debug: var=recursive
