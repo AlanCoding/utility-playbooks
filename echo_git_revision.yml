@@ -1,0 +1,11 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+    - git:
+        repo: 'https://github.com/AlanCoding/utility-playbooks.git'
+        dest: "{{ playbook_dir }}"
+        clone: no
+        update: no
+      register: result
+      run_once: true
+    - debug: msg="before:{{ result.before }} after:{{ result.after }}"
