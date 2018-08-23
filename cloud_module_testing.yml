@@ -1,4 +1,4 @@
-# demo_setup.yml
+# Taken from Ansible documentation
 
 - name: intentionally run modules, and do not provide auth (for testing credentials)
   hosts: localhost
@@ -7,7 +7,7 @@
 
   tasks:
 
-    - name: Provision a set of instances
+    - name: Provision a set of instances (credential_type=aws)
       ec2:
          key_name: my_key
          group: test
@@ -21,9 +21,9 @@
             Name: Demo
       register: ec2
       tags:
-        - ec2
+        - aws
 
-    - name: Create a new instance and attaches to a network and passes metadata to the instance
+    - name: Create a new instance, per example (credential_type=openstack)
       tags:
         - openstack
       os_server:
@@ -45,7 +45,7 @@
              hostname: test1
              group: uge_master
 
-    - name: VMWare Clone the template
+    - name: VMWare Clone the template (credential_type=vmware)
       tags:
         - vmware
       vmware_guest:
@@ -56,12 +56,12 @@
         state: poweredon
         wait_for_ip_address: yes
 
-    - name: Ovirt
+    - name: Ovirt (credential_type=rhv)
       tags:
-        - ovirt
+        - rhv
       ovirt_auth:
 
-    - name: Create an Inventory in Tower
+    - name: Create an Inventory in Tower (credential_type=tower)
       tags:
         - tower
       tower_inventory:
