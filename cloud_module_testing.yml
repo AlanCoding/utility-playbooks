@@ -1,0 +1,71 @@
+# demo_setup.yml
+
+- name: intentionally run modules, and do not provide auth (for testing credentials)
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+
+    - name: Provision a set of instances
+      ec2:
+         key_name: my_key
+         group: test
+         instance_type: t2.micro
+         image: "123456789"
+         wait: true
+         exact_count: 5
+         count_tag:
+            Name: Demo
+         instance_tags:
+            Name: Demo
+      register: ec2
+      tags:
+        - ec2
+
+    - name: Create a new instance and attaches to a network and passes metadata to the instance
+      tags:
+        - openstack
+      os_server:
+           state: present
+           auth:
+             auth_url: https://identity.example.com
+             username: admin
+             password: admin
+             project_name: admin
+           name: vm1
+           image: 4f905f38-e52a-43d2-b6ec-754a13ffb529
+           key_name: ansible_key
+           timeout: 200
+           flavor: 4
+           nics:
+             - net-id: 34605f38-e52a-25d2-b6ec-754a13ffb723
+             - net-name: another_network
+           meta:
+             hostname: test1
+             group: uge_master
+
+    - name: VMWare Clone the template
+      tags:
+        - vmware
+      vmware_guest:
+        name: testvm_2
+        template: template_el7
+        datacenter: DC1
+        folder: /DC1/vm
+        state: poweredon
+        wait_for_ip_address: yes
+
+    - name: Ovirt
+      tags:
+        - ovirt
+      ovirt_auth:
+
+    - name: Create an Inventory in Tower
+      tags:
+        - tower
+      tower_inventory:
+        name: my-inventory
+        organization: Default
+        state: present
+
