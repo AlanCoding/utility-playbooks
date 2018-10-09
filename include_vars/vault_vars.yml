@@ -1,0 +1,11 @@
+- name: Include vault vars
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+
+    - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
+      include_vars:
+        file: stuff.yml
+        # name: stuff
