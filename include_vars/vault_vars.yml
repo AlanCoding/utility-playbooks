@@ -5,7 +5,8 @@
 
   tasks:
 
-    - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
-      include_vars:
-        file: stuff.yml
-        # name: stuff
+    - name: Include contents from whole-file encrypted vars
+      include_vars: stuff.yml
+
+    - name: Include contents from single-variable encrypted vars
+      include_vars: thing.yml
