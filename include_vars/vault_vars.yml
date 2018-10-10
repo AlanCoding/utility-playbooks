@@ -8,5 +8,11 @@
     - name: Include contents from whole-file encrypted vars
       include_vars: stuff.yml
 
+    - name: debug var from whole-file encrypted stuff
+      debug: var=spoiler_text
+
     - name: Include contents from single-variable encrypted vars
       include_vars: thing.yml
+
+    - name: debug var from single var encrypted value
+      debug: var=spoiler_text
