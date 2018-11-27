@@ -1,0 +1,13 @@
+- hosts: "{{ IP }}"  
+  gather_facts: true 
+  vars:
+    IP:
+    ISO:
+    HD: 
+  tasks:
+    - name: Show passed variables
+      debug:
+        msg:
+          -  "Destination IP address: {{ IP }}"
+          -  "ISO image file name: {{ ISO }}"
+          -  "HD designator: {{ HD }}"
