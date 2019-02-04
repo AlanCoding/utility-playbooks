@@ -1,0 +1,41 @@
+---
+# https://docs.ansible.com/ansible/devel/user_guide/playbooks_variables.html
+- name: Assess Ansible magic playbook variables (python-related)
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: the path to the python executable used to invoke the Ansible command line tool
+      debug: var=ansible_playbook_python
+
+- name: Assess Ansible magic playbook variables (inventory-related)
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: the name of the hostname as configured in Ansible’s inventory host file
+      debug: var=inventory_hostname
+
+    - name: the pathname of the directory holding Ansible’s inventory host file
+      debug: var=inventory_dir
+
+    - name: discovered hostname
+      debug: var=ansible_hostname
+      when: ansible_hostname is defined
+
+    - name: the pathname and the filename pointing to the Ansible’s inventory host file
+      debug: var=inventory_file
+
+- name: Assess Ansible magic playbook variables (playbook-related)
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: the playbook base directory
+      debug: var=playbook_dir
+
+    - name: boolean magic variable which will be set to True if you run Ansible with --check
+      debug: var=ansible_check_mode
+
+    - name: the full list of all hosts still active in the current play
+      debug: var=ansible_play_hosts
+
+    - name: list of hostnames that are in scope for the current ‘batch’ of the play
+      debug: var=ansible_play_batch
