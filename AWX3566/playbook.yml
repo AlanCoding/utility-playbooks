@@ -1,0 +1,23 @@
+- name: test unsafe vars
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    ansible_eth0: my_expected_value_is_right_here_foo_bar
+  tasks: 
+
+  - name: Set the manufactured var name
+    set_fact: templated_var_name="{{ 'ansible_' + jboss_bind_iface }}"
+
+  - name: debug manufactured var name
+    debug: var=templated_var_name
+
+  - name: "Set fact jboss_eap_bind_address"
+    set_fact: jboss_eap_bind_address="{{ '{{ ' + 'ansible_' + jboss_bind_iface + ' | string }}' }}"
+
+  - name: Debug var
+    debug: var=jboss_eap_bind_address
+
+  - name: "Debug fact"
+    debug:
+      msg: "Variable jboss_eap_bind_address is {{ jboss_eap_bind_address }} based on interface {{ jboss_bind_iface }}"
