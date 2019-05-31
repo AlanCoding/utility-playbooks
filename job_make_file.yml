@@ -1,0 +1,38 @@
+---
+# This playbook will create a file next to itself with the name
+# job_touch_file.txt.
+# run: ansible-playbook -i localhost, touch.yml
+- name: Make fail adjacent to this playbook
+  hosts: all
+  gather_facts: false
+  connection: local
+  tags: [ make_file ]
+  tasks:
+    - name: Assure that file job_touch_file.txt exists
+      file:
+        path: '{{playbook_dir}}/job_touch_file.txt'
+        state: touch
+
+# If you limit the playbook to this task, then you can tell if the
+# playbook had been ran before within this same file tree
+# run: ansible-playbook -i localhost, job_make_file.yml --tags=test_file
+# this should fail if you run it on a clean file tree
+# run: ansible-playbook -i localhost, job_make_file.yml --tags=make_file
+# run: ansible-playbook -i localhost, job_make_file.yml --tags=test_file
+# if you subsequently run ^ those, both should be successful
+# reset to clean: rm job_touch_file.txt
+- name: Fail playbook if expected playbook-adjacent file does not exist
+  hosts: all
+  gather_facts: false
+  connection: local
+  tags: [ test_file ]
+  tasks:
+    - name: Run stats on file job_touch_file.txt
+      stat:
+        path: '{{playbook_dir}}/job_touch_file.txt'
+      register: job_file_stats
+
+    - name: Fail if file job_touch_file.txt does not exist
+      fail:
+        msg: The expected file does not Exist!!1
+      when: not job_file_stats.stat.exists
