@@ -1,0 +1,8 @@
+---
+# this playbook runs a debug message
+# but it gathers facts for all hosts on the local machine
+- hosts: all
+  gather_facts: true
+  connection: local
+  tasks:
+    - debug: msg='hello'
