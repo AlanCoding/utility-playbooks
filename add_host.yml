@@ -5,6 +5,14 @@
     - add_host:
         hostname: foobar
         ansible_host: "locahost"
+        groups: foogroup
 
     - debug:
         var: ansible_play_hosts
+
+- hosts: foogroup
+  gather_facts: false
+  connection: local
+  tasks:
+  - debug:
+      msg: I was added successfully!
