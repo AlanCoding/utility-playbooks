@@ -1,0 +1,17 @@
+# this secret was produced by the command
+# ansible-vault encrypt_string --ask-vault-pass "hell workld111"
+# given password is "password"
+# there is no id for this vault secret
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+  - set_fact:
+      password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38343532363661666437303861616639373964643366626266613233663631656430303136366366
+          3037663963356531623037663362353639316437333330380a633839343233396266353863343263
+          65373638613332626534373166373864623639363364306435346662656438346332313763323165
+          6464353231386336330a363837393937656635326536646434313864393162383831393336386235
+          3535
+
+  - debug: msg="My password value is {{ password }}"
