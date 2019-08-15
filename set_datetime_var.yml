@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+  - set_fact:
+      testdata: 2017-03-07T10:20:49Z
+
+  - debug: msg="My password value is {{ testdata }}"
