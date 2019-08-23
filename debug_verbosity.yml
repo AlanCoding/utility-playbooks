@@ -1,0 +1,23 @@
+- hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - debug:
+        msg: "vebosity 1"
+        verbosity: 1
+
+    - debug:
+        msg: "vebosity 2"
+        verbosity: 2
+
+    - debug:
+        msg: "vebosity 3"
+        verbosity: 3
+
+    - debug:
+        msg: "vebosity 4"
+        verbosity: 4
+
+    - debug:
+        msg: "vebosity 5"
+        verbosity: 5
