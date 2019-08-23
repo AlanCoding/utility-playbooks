@@ -2,6 +2,13 @@
   gather_facts: false
   connection: local
   tasks:
+
+    - debug:
+        msg: "This is the playbook verbosity: {{ ansible_verbosity }}"
+
+    - debug:
+        msg: "This a print of the vs:{{ ' -' + 'v' * ansible_verbosity if ansible_verbosity else '' }}"
+
     - debug:
         msg: "vebosity 1"
         verbosity: 1
