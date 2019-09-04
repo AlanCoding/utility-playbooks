@@ -1,0 +1,10 @@
+- hosts: all
+  gather_facts: false
+  connection: local
+  collections:
+    - cow.sounds
+  tasks:
+    - moo:
+      register: result
+
+    - debug: var=result.sound
