@@ -70,3 +70,37 @@ verbose mode or if you use a callback plugin.
 ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) color_outputs.yml -vvv
 ANSIBLE_STDOUT_CALLBACK=json ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) color_outputs.yml
 ```
+
+### Test Use of collection
+
+```
+ansible-galaxy collection install chrismeyersfsu.tower_modules:0.0.1 -p alan
+ANSIBLE_COLLECTIONS_PATHS=alan ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) tower_module_chris.yml
+```
+
+This will run a tower module, but this is not enough information to say it worked,
+because the same modules already exist in Ansible core. To verify that, modify
+your local Ansible install with the diff:
+
+```
+diff --git a/lib/ansible/modules/web_infrastructure/ansible_tower/tower_organization.py b/lib/ansible/modules/web_infrastructure/ansible_tower/tower_organization.py
+index bba58d8894..f3e9586e69 100644
+--- a/lib/ansible/modules/web_infrastructure/ansible_tower/tower_organization.py
++++ b/lib/ansible/modules/web_infrastructure/ansible_tower/tower_organization.py
+@@ -88,6 +88,7 @@ def main():
+             module.fail_json(msg='Failed to update the organization: {0}'.format(excinfo), changed=False)
+
+     json_output['changed'] = result['changed']
++    json_output['this_is_the_old_one'] = True
+     module.exit_json(**json_output)
+```
+
+And then run without the collection:
+
+```
+ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) tower_module_chris.yml
+```
+
+That output (and not the output when using the 'alan' collection path) should
+contain `"this_is_the_old_one": true`.
+This will confirm that the collection is working.
