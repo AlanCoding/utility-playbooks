@@ -104,3 +104,27 @@ ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) tow
 That output (and not the output when using the 'alan' collection path) should
 contain `"this_is_the_old_one": true`.
 This will confirm that the collection is working.
+
+#### Doc Fragments
+
+from issue https://github.com/ansible/ansible/issues/56226, we use the -M flag
+as well as setting the collection path.
+
+works:
+
+```
+ANSIBLE_COLLECTIONS_PATHS=alan ansible-doc -M alan/ansible_collections/chrismeyersfsu/tower_modules/plugins/modules/ -t module tower_organization
+```
+
+wrong:
+
+```
+ansible-doc -M alan/ansible_collections/chrismeyersfsu/tower_modules/plugins/modules/ -t module tower_organization
+ERROR! module tower_organization missing documentation (or could not parse documentation): unknown doc_fragment(s) in file /Users/alancoding/Documents/repos/utility-playbooks/alan/ansible_collections/chrismeyersfsu/tower_modules/plugins/modules/tower_organization.py: chrismeyersfsu.tower_modules.tower
+```
+
+gives the wrong docs:
+
+```
+ANSIBLE_COLLECTIONS_PATHS=alan ansible-doc -t module tower_organization
+```
