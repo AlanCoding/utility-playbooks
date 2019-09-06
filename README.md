@@ -59,3 +59,14 @@ ANSIBLE_COLLECTIONS_PATHS=cow1:cow2 ansible-playbook -i localhost, cow.yml
 You can see that the output in both of these cases is different.
 The 2nd one does "moo".
 This means that the 1st entry has higher precedence.
+
+### Colored Output
+
+This playbook runs a command that produces colored output.
+Normally the output is not shown, but it will be if you run in
+verbose mode or if you use a callback plugin.
+
+```
+ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) color_outputs.yml -vvv
+ANSIBLE_STDOUT_CALLBACK=json ansible-playbook -i localhost, -e ansible_python_interpreter=$(which python) color_outputs.yml
+```

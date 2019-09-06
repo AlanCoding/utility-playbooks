@@ -1,0 +1,9 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+  - command: ansible-config dump --only-changed -vvv
+    run_once: true
+  - command: tower-cli organization create --name='foo'
+    run_once: true
