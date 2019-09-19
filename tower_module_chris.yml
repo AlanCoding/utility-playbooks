@@ -4,8 +4,10 @@
   vars:
     tower_password: password
   collections:
-    - chrismeyersfsu.tower_modules
+    # - chrismeyersfsu.tower_modules
+    - alancoding.awx
     # - awx.awx
+    # - ansible.tower
   tasks:
     - name: run tower_organization module
       tower_organization:
