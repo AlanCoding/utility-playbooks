@@ -1,7 +1,5 @@
-# To run this you need to set the environment variables
-# ANSIBLE_GALAXY_SERVER_LIST=galaxy
-# ANSIBLE_GALAXY_SERVER_GALAXY_URL=https://galaxy.ansible.com
-# ANSIBLE_GALAXY_SERVER_GALAXY_TOKEN=<your token>
+# To run this you need to set the extra_vars at minimum
+# galaxy_token=<your token>
 - hosts: localhost
   gather_facts: false
   connection: local
@@ -10,6 +8,7 @@
     package_name: awx
     package_version: 0.0.3
     clone_path: awx_clone
+    galaxy_server: https://galaxy.ansible.com
   tasks:
     - name: Checkout Alans collection branch
       git:
@@ -38,7 +37,8 @@
         exists_message: 'Message: Collection "{{ release_identifier }}" already exists.'
 
     - name: publish the collection
-      command: ansible-galaxy collection publish {{ collection_path }}/{{ release_identifier }}.tar.gz
+      command: ansible-galaxy collection publish {{ collection_path }}/{{ release_identifier }}.tar.gz -s {{ galaxy_server }} --api-key {{ galaxy_token }}
+      no_log: true
       register: publish_result
       changed_when: "'Collection has been successfully published and imported' in publish_result.stdout"
       failed_when:
