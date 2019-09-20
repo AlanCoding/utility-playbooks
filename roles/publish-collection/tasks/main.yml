@@ -27,6 +27,8 @@
 
 - name: build the collection
   command: ansible-galaxy collection build {{ collection_path }} --output-path={{ collection_path }} --force
+  environment:
+    ANSIBLE_FORCE_COLOR: False
 
 - name: Template the ansible.cfg for galaxy publish command
   template:
@@ -42,6 +44,8 @@
   command: ansible-galaxy collection publish {{ collection_rel_path }}/{{ release_identifier }}.tar.gz
   args:
     chdir: "{{ clone_path }}"
+  environment:
+    ANSIBLE_FORCE_COLOR: False
   register: publish_result
   changed_when: "'Collection has been successfully published and imported' in publish_result.stdout"
   failed_when:
