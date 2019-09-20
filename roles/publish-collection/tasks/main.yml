@@ -1,0 +1,49 @@
+---
+- name: Preflight check - you need a galaxy token to run this
+  debug: msg="You must defined variable galaxy_token"
+  failed_when: galaxy_token is not defined
+
+- name: Clone the collection repo locally
+  git:
+    repo: "{{ collection_repo }}"
+    dest: "{{ clone_path }}"
+    version: "{{ collection_branch }}"
+    force: yes
+    depth: 1
+
+- name: Condense the relative path to the AWX collection
+  set_fact:
+    collection_path: "{{ clone_path }}/{{ collection_rel_path }}"
+
+- name: Template the galaxy.yml file
+  template:
+    src: "{{ collection_path }}/galaxy.yml.j2"
+    dest: "{{ collection_path }}/galaxy.yml"
+    force: true
+
+- name: build the collection
+  command: ansible-galaxy collection build {{ collection_path }} --output-path={{ collection_path }} --force
+
+- name: Save filename of build
+  set_fact:
+    release_identifier: "{{ namespace_name }}-{{ package_name }}-{{ package_version }}"
+
+- name: Template the ansible.cfg for galaxy publish command
+  template:
+    src: ansible.cfg.j2
+    dest: "{{ clone_path }}/ansible.cfg"
+    force: true
+
+- name: Set expected exists message
+  set_fact:
+    exists_message: 'Message: Collection "{{ release_identifier }}" already exists.'
+
+- name: publish the collection
+  command: ansible-galaxy collection publish {{ collection_rel_path }}/{{ release_identifier }}.tar.gz
+  args:
+    chdir: "{{ clone_path }}"
+  register: publish_result
+  changed_when: "'Collection has been successfully published and imported' in publish_result.stdout"
+  failed_when:
+    - publish_result.rc != 0
+    - exists_message not in publish_result.stderr
