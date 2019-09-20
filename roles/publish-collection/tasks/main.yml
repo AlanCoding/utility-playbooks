@@ -1,6 +1,10 @@
 ---
-- name: Preflight check - you need a galaxy token to run this
-  debug: msg="You must defined variable galaxy_token"
+- name: Save filename of build
+  set_fact:
+    release_identifier: "{{ namespace_name }}-{{ package_name }}-{{ package_version }}"
+
+- name: Preflight check and basic debug info
+  debug: msg="Will upload {{ release_identifier }} to {{ galaxy_server }}. You must provide galaxy_token."
   failed_when: galaxy_token is not defined
 
 - name: Clone the collection repo locally
@@ -23,10 +27,6 @@
 
 - name: build the collection
   command: ansible-galaxy collection build {{ collection_path }} --output-path={{ collection_path }} --force
-
-- name: Save filename of build
-  set_fact:
-    release_identifier: "{{ namespace_name }}-{{ package_name }}-{{ package_version }}"
 
 - name: Template the ansible.cfg for galaxy publish command
   template:
