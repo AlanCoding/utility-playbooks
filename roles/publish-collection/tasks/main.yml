@@ -19,6 +19,23 @@
   set_fact:
     collection_path: "{{ clone_path }}/{{ collection_rel_path }}"
 
+- name: Do file content replacements for non-default namespace or package name
+  block:
+  - name: Find all module files
+    find:
+      paths: "{{ collection_path }}/plugins/modules"
+      patterns: "*.py"
+    register: module_files
+
+  - name: Change files to support desired namespace and package names
+    replace:
+      path: "{{ item.path }}"
+      regexp: '^extends_documentation_fragment: awx.awx.auth$'
+      replace: 'extends_documentation_fragment: {{ namespace_name }}.{{ package_name }}.auth'
+    with_items: "{{ module_files.files }}"
+  when:
+    - (package_name != 'awx') or (namespace_name != 'awx')
+
 - name: Template the galaxy.yml file
   template:
     src: "{{ collection_path }}/galaxy.yml.j2"
