@@ -1,0 +1,11 @@
+# ANSIBLE_SHOW_CUSTOM_STATS=true ansible-playbook -i stats/hosts stats/stats_per_host.yml
+- name: Set stats per host
+  hosts: all
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - set_stats:
+        data:
+          packages_installed: 31
+        per_host: yes
