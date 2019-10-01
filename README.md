@@ -128,3 +128,32 @@ gives the wrong docs:
 ```
 ANSIBLE_COLLECTIONS_PATHS=alan ansible-doc -t module tower_organization
 ```
+
+#### Collection playbooks
+
+Run the collection playbooks
+
+```
+tower-cli login admin
+ansible-playbook -i localhost, galaxy_setup.yml -e ansible_python_interpreter=$(which python)
+```
+
+This assumes that you have tower-cli installed to the virtual environment
+where you are running Ansible itself.
+
+From there, you can either launch the job template, or you can run this stuff
+manually.
+
+```
+ansible-playbook -i localhost, galaxy_upload.yml -e ansible_python_interpreter=$(which python) -e package_version=0.0.2 -e galaxy_token=<add_yo_token>
+rm -rf awx_clone
+```
+
+Removing the clone isn't necessary, but you know... clean up after yourself.
+
+If the collection already exists, it should give you this:
+
+```
+TASK [publish-collection : publish the collection] ****************************
+ok: [localhost]
+```

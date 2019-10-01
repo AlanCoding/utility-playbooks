@@ -1,0 +1,9 @@
+# To run this you need basic tower-cli authentication set up
+# tower-cli login admin
+# or env vars
+# role does not pass in auth as parameters
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  roles:
+    - awx-collection-publisher

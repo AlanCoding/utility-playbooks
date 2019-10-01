@@ -1,0 +1,34 @@
+- name: Assure collection organization exists
+  tower_organization:
+    name: "{{ collection_organization }}"
+
+- name: Create a project with the collection publishing steps
+  tower_project:
+    name: alan utility playbooks
+    scm_type: git
+    scm_url: https://github.com/AlanCoding/utility-playbooks.git
+    organization: "{{ collection_organization }}"
+  register: project_result
+
+- name: Wait for the project to update
+  pause:
+    minutes: 1
+  when: project_result.changed
+
+- name: Create a localhost inventory
+  tower_inventory:
+    name: localhost
+    organization: "{{ collection_organization }}"
+
+- name: Create a host in that localhost inventory
+  tower_host:
+    name: localhost
+    inventory: localhost
+
+- name: Create a job template to publish the collection
+  tower_job_template:
+    name: "Release {{ namespace_name }}.{{ package_name }} to {{ galaxy_server }}"
+    project: alan utility playbooks
+    inventory: localhost
+    job_type: run
+    playbook: galaxy_upload.yml
