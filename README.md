@@ -157,3 +157,11 @@ If the collection already exists, it should give you this:
 TASK [publish-collection : publish the collection] ****************************
 ok: [localhost]
 ```
+
+Now test by installing the latest from Galaxy.
+
+```
+ansible-galaxy collection install alancoding.awx -p alan
+```
+
+This should not require any authentication.

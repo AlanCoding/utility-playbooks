@@ -1,7 +1,7 @@
 namespace_name: alancoding
 package_name: awx
 package_version: 0.0.3  # tower_ident
-clone_path: awx_clone
+clone_path: tower
 galaxy_server: https://galaxy.ansible.com
 collection_repo: https://github.com/AlanCoding/awx.git
 collection_rel_path: awx_collection
