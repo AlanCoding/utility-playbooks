@@ -43,7 +43,7 @@
     force: true
 
 - name: build the collection
-  command: ansible-galaxy collection build {{ collection_path }} --output-path={{ collection_path }} --force
+  command: ansible-galaxy collection build {{ collection_path }} --output-path={{ collection_path }} --force{{ ' -' + 'v' * ansible_verbosity if ansible_verbosity else '' }}
   environment:
     ANSIBLE_FORCE_COLOR: False
 
@@ -58,7 +58,7 @@
     exists_message: 'Message: Collection "{{ release_identifier }}" already exists.'
 
 - name: publish the collection
-  command: ansible-galaxy collection publish {{ collection_rel_path }}/{{ release_identifier }}.tar.gz
+  command: ansible-galaxy collection publish {{ collection_rel_path }}/{{ release_identifier }}.tar.gz{{ ' -' + 'v' * ansible_verbosity if ansible_verbosity else '' }}
   args:
     chdir: "{{ clone_path }}"
   environment:
