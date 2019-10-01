@@ -25,10 +25,24 @@
     name: localhost
     inventory: localhost
 
+- name: Create the Galaxy token credential type
+  tower_credential_type:
+    description: Ansible Galaxy token authentication for write access
+    name: galaxy
+    kind: cloud
+    inputs: '{"fields": [{"id": "server","type": "string","default": "https://galaxy.ansible.com","label": "Galaxy Server URL"},{"id": "token","type": "string","label": "Galaxy API Token","secret": true}],"required": ["token"]}'
+    injectors: |
+      {"extra_vars": {"galaxy_token": "{{ '{{' }}token{{ '}}' }}","galaxy_server": "{{ '{{' }}server{{ '}}' }}"}}
+
 - name: Create a job template to publish the collection
   tower_job_template:
     name: "Release {{ collection_namespace }}.{{ collection_package }} to {{ galaxy_server }}"
     project: alan utility playbooks
     inventory: localhost
     job_type: run
+    survey_enabled: true
+    survey_spec: '{"name": "","description": "","spec": [{"question_name": "Version of the collection to release","question_description": "","required": false,"type": "text","variable": "collection_version","min": 0,"max": 1024,"default": "0.0.1","choices": "","new_question": true}]}'
     playbook: galaxy_upload.yml
+
+# after this you need to manually enter your galaxy token
+# and then associate the credential with the JT
