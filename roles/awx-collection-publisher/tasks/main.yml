@@ -27,7 +27,7 @@
 
 - name: Create a job template to publish the collection
   tower_job_template:
-    name: "Release {{ namespace_name }}.{{ package_name }} to {{ galaxy_server }}"
+    name: "Release {{ collection_namespace }}.{{ collection_package }} to {{ galaxy_server }}"
     project: alan utility playbooks
     inventory: localhost
     job_type: run

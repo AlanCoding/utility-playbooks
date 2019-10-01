@@ -145,7 +145,7 @@ From there, you can either launch the job template, or you can run this stuff
 manually.
 
 ```
-ansible-playbook -i localhost, galaxy_upload.yml -e ansible_python_interpreter=$(which python) -e package_version=0.0.2 -e galaxy_token=<add_yo_token>
+ansible-playbook -i localhost, galaxy_upload.yml -e ansible_python_interpreter=$(which python) -e collection_version=0.0.2 -e galaxy_token=<add_yo_token>
 rm -rf awx_clone
 ```
 

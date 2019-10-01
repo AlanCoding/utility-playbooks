@@ -1,7 +1,7 @@
 ---
 - name: Save filename of build
   set_fact:
-    release_identifier: "{{ namespace_name }}-{{ package_name }}-{{ package_version }}"
+    release_identifier: "{{ collection_namespace }}-{{ collection_package }}-{{ collection_version }}"
 
 - name: Preflight check and basic debug info
   debug: msg="Will upload {{ release_identifier }} to {{ galaxy_server }}. You must provide galaxy_token."
@@ -31,10 +31,10 @@
     replace:
       path: "{{ item.path }}"
       regexp: '^extends_documentation_fragment: awx.awx.auth$'
-      replace: 'extends_documentation_fragment: {{ namespace_name }}.{{ package_name }}.auth'
+      replace: 'extends_documentation_fragment: {{ collection_namespace }}.{{ collection_package }}.auth'
     with_items: "{{ module_files.files }}"
   when:
-    - (package_name != 'awx') or (namespace_name != 'awx')
+    - (collection_package != 'awx') or (collection_namespace != 'awx')
 
 - name: Template the galaxy.yml file
   template:

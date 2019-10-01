@@ -1,9 +1,9 @@
-namespace_name: alancoding
-package_name: awx
-package_version: 0.0.3  # tower_ident
-clone_path: tower
-galaxy_server: https://galaxy.ansible.com
+collection_namespace: alancoding
+collection_package: awx
+collection_version: 0.0.3  # tower_ident
 collection_repo: https://github.com/AlanCoding/awx.git
 collection_rel_path: awx_collection
 collection_branch: awx_modules_merge
-collection_organization: Default
+clone_path: tower
+galaxy_server: https://galaxy.ansible.com
+# also need to define galaxy_token
