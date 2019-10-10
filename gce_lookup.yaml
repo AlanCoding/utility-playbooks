@@ -10,7 +10,7 @@
       source_image: 'projects/ubuntu-os-cloud/global/images/family/ubuntu-1804-lts'
       type: 'pd-ssd'
       zone: us-central1-a
-      project: awx_engineering
+      project: awxengineering
       auth_kind: serviceaccount
       service_account_file: "{{ lookup('env','GCP_SERVICE_ACCOUNT_FILE') }}"
       state: absent
