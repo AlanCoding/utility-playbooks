@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+  - name: create a disk
+    gcp_compute_disk:
+      name: test_object
+      size_gb: 50
+      zone: us-central1-a
+      project: test_project
+      auth_kind: serviceaccount
+      service_account_file: "{{ lookup('env','GCP_SERVICE_ACCOUNT_FILE') }}"
+      state: present
