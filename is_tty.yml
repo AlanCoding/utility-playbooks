@@ -1,0 +1,25 @@
+---
+# ansible-playbook -i localhost, is_tty.yml
+# (returns false)
+- hosts: all
+  gather_facts: true
+  connection: local
+  tasks:
+    - name: Determine if shell uses a tty
+      shell: >
+        python -c "import sys; print(sys.stdout.isatty())"
+      register: result
+
+    - name: Show result of that
+      debug:
+        msg: "stdout: {{result.stdout}}, stderr: {{result.stderr}}"
+
+    - name: Determine if command uses a tty
+      command: >
+        python -c "import sys; print(sys.stdout.isatty())" | grep .
+      register: result
+
+    - name: Show result of that
+      debug:
+        msg: "stdout: {{result.stdout}}, stderr: {{result.stderr}}"
+
