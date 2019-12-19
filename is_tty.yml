@@ -7,7 +7,7 @@
   tasks:
     - name: Determine if shell uses a tty
       shell: >
-        python -c "import sys; print(sys.stdout.isatty())"
+        python3 -c "import sys; print(sys.stdout.isatty())"
       register: result
 
     - name: Show result of that
@@ -16,10 +16,11 @@
 
     - name: Determine if command uses a tty
       command: >
-        python -c "import sys; print(sys.stdout.isatty())" | grep .
+        python3 -c "import sys; print(sys.stdout.isatty())" | grep .
       register: result
 
     - name: Show result of that
       debug:
         msg: "stdout: {{result.stdout}}, stderr: {{result.stderr}}"
 
+# Compare to same command ran from Makefile, `make test_tty` -> True
