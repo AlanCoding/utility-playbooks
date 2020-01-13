@@ -1,0 +1,10 @@
+- hosts: all
+  gather_facts: false
+  connection: local
+  vars:
+    character: b
+    times: 500
+  tasks:
+    - repeat_character:
+        character: "{{ character }}"
+        times: "{{ times }}"
