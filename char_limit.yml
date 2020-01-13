@@ -9,4 +9,4 @@
     - repeat_character:
         character: "{{ character }}"
         times: "{{ times }}"
-      loop: "{{ range(0, num_messages) | list }}"
+      loop: "{{ range(0, num_messages | int) | list }}"
