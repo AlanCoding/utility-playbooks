@@ -4,7 +4,9 @@
   vars:
     character: b
     times: 500
+    num_messages: 50
   tasks:
     - repeat_character:
         character: "{{ character }}"
         times: "{{ times }}"
+      loop: "{{ range(0, num_messages) | list }}"
