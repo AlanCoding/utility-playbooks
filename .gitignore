@@ -1,3 +1,6 @@
 *.retry
 awx_clone/
 tower/
+
+__pycache__/
+*.pyc
