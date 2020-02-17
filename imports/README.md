@@ -22,7 +22,7 @@ Repeating, but using folder named literally "module_utils:
 did not work:
 
 ```
-ANSIBLE_CALLBACK_PLUGINS=non_collection/callbacks ANSIBLE_MODULE_UTILS=non_collection/module_utils ansible-playbook ../debug_verbosity.yml -i localhost,
+ANSIBLE_STDOUT_CALLBACK=test_display ANSIBLE_CALLBACK_PLUGINS=non_collection/callbacks ANSIBLE_MODULE_UTILS=non_collection/module_utils ansible-playbook ../debug_verbosity.yml -i localhost,
 ```
 
 same with inventory plugin:
