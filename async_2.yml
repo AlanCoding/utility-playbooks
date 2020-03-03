@@ -1,7 +1,10 @@
 - hosts: all
+  connection: local
+  vars:
+    sleep_time: 2
   tasks:
     - name: 'Poll Hello World'
       async: 20
       poll: 1
-      command: /bin/sleep 2
+      command: "/bin/sleep {{ sleep_time }}"
       no_log: true
