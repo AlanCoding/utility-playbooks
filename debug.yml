@@ -1,0 +1,9 @@
+- hosts: all
+  gather_facts: false
+  connection: local
+  vars:
+    inspect: "Hello world, this is a debug playbook."
+  tasks:
+    - name: Use debug task for the inspect variable
+      debug:
+        var: inspect
