@@ -1,7 +1,0 @@
-- hosts: all
-  tasks:
-    - name: 'Poll Hello World'
-      async: 20
-      poll: 1
-      command: /bin/sleep 8
-      no_log: true
