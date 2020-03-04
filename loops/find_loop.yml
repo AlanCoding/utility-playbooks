@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: Find python files in folder scripts
+      find:
+        paths: "{{ playbook_dir }}/scripts"
+        patterns: "*.py"
+        file_type: "file"
+      register: python_files
+    
+    - name: Execute those python scripts from the script folder
+      shell: "python {{ item.path | basename }}"
+      args:
+        chdir: "{{ playbook_dir }}/scripts"
+      loop: "{{ python_files.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"

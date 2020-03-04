@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: Execute those python scripts from the script folder
+      shell: "python {{ item | basename }}"
+      args:
+        chdir: "{{ playbook_dir }}/scripts"
+      with_fileglob: "{{ playbook_dir }}/scripts/*.py"
+      loop_control:
+        label: "{{ item | basename }}"
