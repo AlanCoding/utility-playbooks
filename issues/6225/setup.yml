@@ -1,0 +1,47 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: create default organization if needed
+      awx.awx.tower_organization:
+        name: Default
+
+    - name: create demo inventory if needed
+      awx.awx.tower_inventory:
+        name: Demo Inventory
+        organization: Default
+
+    - name: delete JT if it already exists
+      awx.awx.tower_job_template:
+        name: issue-6225
+        state: absent
+        project: issue-6225
+        playbook: issues/6225/use.yml
+
+    - name: create project from this exact repo
+      awx.awx.tower_project:
+        name: issue-6225
+        scm_url: https://github.com/AlanCoding/utility-playbooks.git
+
+    - name: Create JT that runs this scenario
+      awx.awx.tower_job_template:
+        name: issue-6225
+        project: issue-6225
+        inventory: Demo Inventory
+        playbook: issues/6225/use.yml
+        job_type: run
+        survey_spec:
+          spec:
+            - index: 0
+              question_name: "enter multiselect thing"
+              default: "balloon\nflower\nvase"
+              variable: loop_me
+              type: multiselect
+              required: False
+          description: this is a test survey
+          name: survey for 6225
+
+    - name: launch that JT
+      awx.awx.tower_job_launch:
+        job_template: issue-6225

@@ -1,0 +1,13 @@
+---
+- name: Loop over multiselect variable with default
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    loop_me:
+      - foo
+      - bar
+  tasks:
+    - name: Debug each item in list
+      debug: var=item
+      with_items: "{{ loop_me }}"
