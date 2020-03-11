@@ -18,10 +18,13 @@
         state: absent
         project: issue-6225
         playbook: issues/6225/use.yml
+      ignore_errors: true
 
     - name: create project from this exact repo
       awx.awx.tower_project:
         name: issue-6225
+        organization: Default
+        scm_type: git
         scm_url: https://github.com/AlanCoding/utility-playbooks.git
 
     - name: Create JT that runs this scenario
@@ -31,11 +34,18 @@
         inventory: Demo Inventory
         playbook: issues/6225/use.yml
         job_type: run
+        survey_enabled: true
         survey_spec:
           spec:
             - index: 0
               question_name: "enter multiselect thing"
               default: "balloon\nflower\nvase"
+              choices:
+                - balloon
+                - flower
+                - vase
+                - foobar
+                - barfoo
               variable: loop_me
               type: multiselect
               required: False
