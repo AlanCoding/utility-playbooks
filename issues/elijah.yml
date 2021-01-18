@@ -1,0 +1,55 @@
+# prior work: https://github.com/AlanCoding/collection-dependencies-demo
+# ee_imports/test.yml
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    container_name: container_for_elijah
+    image_name: quay.io/centos/centos:8
+  collections:
+    - containers.podman
+  tasks:
+    - name: start container
+      podman_container:
+        name: "{{ container_name }}"
+        hostname: "{{ container_name }}"
+        image: "{{ image_name }}"
+        state: started
+        command: "sleep 1d"
+        volume:
+          - "{{ playbook_dir }}:/elijah:Z"
+
+    - name: add container to inventory
+      add_host:
+        name: "{{ container_name }}"
+        ansible_host: "{{ container_name }}"
+        ansible_connection: podman
+        groups: elijah_containers
+
+    - name: set local connection for localhost, for the latter always task
+      set_fact:
+        ansible_connection: local
+
+- hosts: elijah_containers
+  gather_facts: false
+  collections:
+    - containers.podman
+  tasks:
+    - block:
+        - name: write something to a file in tmp folder (this works)
+          copy:
+            content: "foo_bar"
+            dest: "/tmp/file_for_elijah.txt"
+
+        - name: write something to a file in the volume (this fails)
+          copy:
+            content: "foo_bar"
+            dest: "/elijah/file_for_elijah.txt"
+
+      always:
+        - name: destroy container with local connection
+          podman_container:
+            name: "{{ ansible_host }}"
+            state: absent
+          delegate_to: localhost
