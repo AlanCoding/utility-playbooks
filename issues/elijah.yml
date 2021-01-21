@@ -9,15 +9,18 @@
     image_name: quay.io/centos/centos:8
   collections:
     - containers.podman
+    # - community.general
   tasks:
     - name: start container
       podman_container:
+      # docker_container:
         name: "{{ container_name }}"
         hostname: "{{ container_name }}"
         image: "{{ image_name }}"
         state: started
         command: "sleep 1d"
         volume:
+        # volumes:  # docker
           - "{{ playbook_dir }}:/elijah:Z"
 
     - name: add container to inventory
@@ -25,6 +28,7 @@
         name: "{{ container_name }}"
         ansible_host: "{{ container_name }}"
         ansible_connection: podman
+        # ansible_connection: docker
         groups: elijah_containers
 
     - name: set local connection for localhost, for the latter always task
@@ -35,6 +39,7 @@
   gather_facts: false
   collections:
     - containers.podman
+    # - community.general
   tasks:
     - block:
         - name: write something to a file in tmp folder (this works)
@@ -42,14 +47,24 @@
             content: "foo_bar"
             dest: "/tmp/file_for_elijah.txt"
 
+        # # viable fix
+        # - name: change the remote tmp directory
+        #   set_fact:
+        #     ansible_remote_tmp: /elijah/.tmp
+
         - name: write something to a file in the volume (this fails)
           copy:
             content: "foo_bar"
             dest: "/elijah/file_for_elijah.txt"
 
       always:
+        # - name: change the remote tmp directory back
+        #   set_fact:
+        #     ansible_remote_tmp: /tmp/.ansible
+
         - name: destroy container with local connection
           podman_container:
+          # docker_container:
             name: "{{ ansible_host }}"
             state: absent
           delegate_to: localhost
