@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars:
+    play_gather: true
+  gather_facts: false
+  tasks:
+    - name: set a fact man
+      set_fact:
+        my_fact_key: "{{ 99999999 | random }}"
+        cacheable: true
