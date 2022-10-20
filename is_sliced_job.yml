@@ -1,0 +1,8 @@
+
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+  - debug:
+      msg: "This is a sliced job, true or false: {{ tower_job_template_name | default(None) == tower_workflow_job_name | default('') }}"
